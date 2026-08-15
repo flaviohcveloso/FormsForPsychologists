@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulário de Briefing — Biosite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf6f0;
+    --panel:#ffffff;
+    --blue-fill:#cfe7f2;
+    --blue-fill-dark:#b9dcec;
+    --blue-border:#a9d3e8;
+    --blue-text:#4a7a91;
+    --ink:#2f3e46;
+    --ink-soft:#5b6b73;
+    --accent:#3f8bab;
+    --required:#c0392b;
+    --radius:999px;
+    --radius-box:22px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Fredoka',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    padding:48px 16px 80px;
+    background-image:
+      radial-gradient(circle at 10% 8%, rgba(207,231,242,0.55) 0%, rgba(207,231,242,0) 40%),
+      radial-gradient(circle at 92% 85%, rgba(185,220,236,0.5) 0%, rgba(185,220,236,0) 45%);
+  }
+  .card{
+    max-width:720px;
+    margin:0 auto;
+    background:var(--panel);
+    border-radius:32px;
+    padding:56px 48px 48px;
+    box-shadow:0 30px 60px -30px rgba(47,62,70,0.18), 0 2px 8px rgba(47,62,70,0.05);
+  }
+  h1{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    text-align:center;
+    font-size:2.15rem;
+    color:var(--ink);
+    margin:0 0 8px;
+    letter-spacing:0.2px;
+  }
+  .subtitle{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.98rem;
+    margin:0 0 40px;
+    line-height:1.5;
+  }
+  .section-title{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    color:var(--accent);
+    margin:44px 0 6px;
+    padding-bottom:10px;
+    border-bottom:1px solid #eae3d8;
+  }
+  .section-title:first-of-type{margin-top:0;}
+  .section-hint{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin:0 0 20px;
+  }
+  label{
+    display:block;
+    font-weight:700;
+    font-size:0.92rem;
+    color:var(--ink);
+    margin:20px 0 8px;
+  }
+  label .req{color:var(--required); margin-left:2px;}
+  label .optional{
+    font-weight:500;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    margin-left:6px;
+  }
+  .help{
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin:-4px 0 8px;
+    line-height:1.4;
+  }
+  input[type=text],
+  input[type=email],
+  input[type=tel],
+  input[type=url],
+  textarea{
+    width:100%;
+    background:var(--blue-fill);
+    border:1px solid var(--blue-border);
+    border-radius:var(--radius);
+    padding:14px 20px;
+    font-family:'Fredoka',sans-serif;
+    font-size:0.95rem;
+    color:var(--ink);
+    outline:none;
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  textarea{
+    border-radius:20px;
+    resize:vertical;
+    min-height:88px;
+    line-height:1.5;
+  }
+  input::placeholder, textarea::placeholder{color:var(--blue-text);}
+  input:focus, textarea:focus{
+    background:var(--blue-fill-dark);
+    box-shadow:0 0 0 3px rgba(63,139,171,0.25);
+  }
+  .row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .row > div{width:100%;}
+  .file-input{
+    width:100%;
+    background:var(--blue-fill);
+    border:1px dashed var(--blue-border);
+    border-radius:var(--radius-box);
+    padding:18px 20px;
+    font-size:0.9rem;
+    color:var(--blue-text);
+  }
+  .file-input input[type=file]{
+    display:block;
+    margin-top:8px;
+    font-size:0.85rem;
+    color:var(--ink);
+    max-width:100%;
+  }
+  .choice-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:4px;
+  }
+  .choice{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--blue-fill);
+    border:1px solid var(--blue-border);
+    border-radius:var(--radius);
+    padding:10px 16px;
+    font-size:0.88rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .choice input{accent-color:var(--accent);}
+  .choice-other{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--blue-fill);
+    border:1px solid var(--blue-border);
+    border-radius:var(--radius);
+    padding:8px 8px 8px 16px;
+    font-size:0.88rem;
+    color:var(--ink);
+    flex:1 1 260px;
+  }
+  .choice-other input[type=checkbox]{accent-color:var(--accent); flex-shrink:0;}
+  .choice-other input[type=text]{
+    flex:1;
+    background:#fff;
+    border:1px solid var(--blue-border);
+    border-radius:var(--radius);
+    padding:8px 14px;
+    margin:0;
+    min-width:0;
+  }
+  .radio-stack{display:flex; flex-direction:column; gap:10px; margin-top:4px;}
+  .radio-option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--blue-fill);
+    border:1px solid var(--blue-border);
+    border-radius:var(--radius);
+    padding:12px 18px;
+    font-size:0.9rem;
+    flex-wrap:wrap;
+  }
+  .radio-option input[type=radio]{accent-color:var(--accent); flex-shrink:0;}
+  .radio-option input[type=text]{
+    flex:1;
+    min-width:120px;
+    background:#fff;
+    border:1px solid var(--blue-border);
+    border-radius:var(--radius);
+    padding:8px 14px;
+    margin:0;
+  }
+  button.submit{
+    display:block;
+    width:100%;
+    margin-top:44px;
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    border-radius:var(--radius);
+    padding:16px;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    letter-spacing:0.3px;
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+  button.submit:hover{background:#357891;}
+  button.submit:active{transform:translateY(1px);}
+  button.submit:disabled{opacity:0.6; cursor:default;}
+  .error-msg{
+    display:none;
+    color:var(--required);
+    font-size:0.85rem;
+    text-align:center;
+    margin-top:12px;
+  }
+  .error-msg.show{display:block;}
+  .success{
+    display:none;
+    text-align:center;
+    padding:40px 10px 10px;
+  }
+  .success.show{display:block;}
+  .success h2{
+    font-family:'Fredoka',sans-serif;
+    color:var(--accent);
+    margin-bottom:8px;
+  }
+  .success p{color:var(--ink-soft); font-size:0.95rem; line-height:1.6;}
+  form.hide{display:none;}
+  .note{
+    max-width:720px;
+    margin:18px auto 0;
+    font-size:0.78rem;
+    color:#93867a;
+    text-align:center;
+    line-height:1.5;
+  }
+
+  @media (max-width:640px){
+    body{padding:24px 10px 60px;}
+    .card{padding:34px 20px 32px; border-radius:24px;}
+    h1{font-size:1.6rem;}
+    .subtitle{font-size:0.9rem; margin-bottom:28px;}
+    .section-title{font-size:1.1rem; margin:34px 0 6px;}
+    .row{grid-template-columns:1fr; gap:14px;}
+    .radio-option{flex-direction:row;}
+    label{font-size:0.88rem;}
+    input[type=text], input[type=email], input[type=tel], input[type=url], textarea{
+      padding:12px 16px; font-size:0.92rem;
+    }
+    button.submit{font-size:0.98rem; padding:15px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Formulário de Briefing</h1>
+  <p class="subtitle">Preencha as informações abaixo para começarmos a criar o seu Link na bio.</p>
+
+  <form id="briefingForm" action="https://formsubmit.co/flaviohcsmurf@gmail.com" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="_subject" value="Novo Briefing de Landing Page recebido">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+    <div class="section-title">Seus dados</div>
+    <label>Nome<span class="req">*</span></label>
+    <div class="row">
+      <div><input type="text" name="Nome" placeholder="Nome" required></div>
+      <div><input type="text" name="Sobrenome" placeholder="Sobrenome" required></div>
+    </div>
+
+    <label>E-mail<span class="req">*</span></label>
+    <input type="email" name="E-mail" placeholder="seuemail@exemplo.com" required>
+
+    <label>WhatsApp / Telefone<span class="req">*</span></label>
+    <input type="tel" name="WhatsApp / Telefone" placeholder="(00) 00000-0000" required>
+
+
+    <div class="section-title">Identidade visual</div>
+    <p class="section-hint">Se você já tiver algo definido, nos envie — se não, podemos construir do zero. Atenção: a soma de todos os arquivos enviados no formulário (branding, prints e fotos) não pode ultrapassar 10MB — se passar disso, prefira enviar os arquivos maiores por WhatsApp ou e-mail direto.</p>
+
+    <label>Seu Branding <span class="optional">(se já tiver algo pronto, em alta resolução)</span></label>
+    <div class="file-input">
+      Arraste os arquivos ou clique para selecionar (pode enviar mais de um)
+      <input type="file" name="Seu Branding" accept="image/*,.pdf,.ai,.eps" multiple>
+    </div>
+
+    <label>Paleta de cores de preferência <span class="optional">(opcional)</span></label>
+    <div class="help">Cores que você já usa em outros materiais, ou cores que gostaria de ver na sua página. Caso não tenha um branding pessoal definido, pode deixar em branco — nós sugerimos uma paleta para você.</div>
+    <input type="text" name="Paleta de cores" placeholder="Ex: azul claro, bege, verde-sálvia...">
+
+    <label>Tipografia / fontes que você gosta <span class="optional">(opcional)</span></label>
+    <div class="help">Se não tiver preferência, ou não tiver um branding pessoal definido, deixe em branco — podemos sugerir opções.</div>
+    <input type="text" name="Tipografia" placeholder="Ex: fontes serifadas, arredondadas, minimalistas...">
+
+
+    <div class="section-title">Referências</div>
+
+    <label>Sites de outras psicólogas ou clínicas que você admira</label>
+    <div class="help">Cole um link por linha.</div>
+    <textarea name="Sites de referência" placeholder="https://..."></textarea>
+
+    <label>Estilo visual que você imagina</label>
+    <div class="choice-grid">
+      <label class="choice"><input type="checkbox" name="Estilo visual" value="Minimalista"> Minimalista</label>
+      <label class="choice"><input type="checkbox" name="Estilo visual" value="Acolhedor"> Acolhedor</label>
+      <label class="choice"><input type="checkbox" name="Estilo visual" value="Clean"> Clean</label>
+      <label class="choice"><input type="checkbox" name="Estilo visual" value="Colorido"> Colorido</label>
+      <label class="choice"><input type="checkbox" name="Estilo visual" value="Clássico"> Clássico</label>
+      <label class="choice"><input type="checkbox" name="Estilo visual" value="Moderno"> Moderno</label>
+      <label class="choice-other">
+        <input type="checkbox" name="Estilo visual" value="Outro">
+        Outro/mais:
+        <input type="text" name="Estilo visual - detalhes" placeholder="descreva o que você imagina...">
+      </label>
+    </div>
+
+    <label>Prints ou exemplos de design <span class="optional">(opcional)</span></label>
+    <div class="file-input">
+      Envie imagens de referência — landing pages, prints, moodboard (pode enviar mais de um arquivo)
+      <input type="file" name="Prints de referência" accept="image/*,.pdf" multiple>
+    </div>
+    <div class="help" style="margin-top:10px;">Também pode colar links de referência (Pinterest, Instagram, sites, etc.), um por linha:</div>
+    <textarea name="Links de referência" placeholder="https://pinterest.com/... , https://instagram.com/..."></textarea>
+
+
+    <div class="section-title">Sobre você e seu trabalho</div>
+
+    <label>Foto profissional <span class="optional">(de preferência de boa qualidade — pode enviar mais de uma)</span></label>
+    <div class="file-input">
+      Arraste os arquivos ou clique para selecionar
+      <input type="file" name="Foto profissional" accept="image/*" multiple>
+    </div>
+
+    <label>Bio / apresentação profissional</label>
+    <textarea name="Bio / Apresentação" placeholder="Uma breve apresentação sobre você e sua trajetória..."></textarea>
+
+    <label>Formação, especializações e abordagem terapêutica</label>
+    <div class="help">Ex: TCC, psicanálise, terapia sistêmica, etc.</div>
+    <textarea name="Formação e abordagem" placeholder="Conte sobre sua formação e abordagem..."></textarea>
+
+    <label>Público-alvo</label>
+    <input type="text" name="Público-alvo" placeholder="Ex: adultos, adolescentes, casais, famílias...">
+
+    <label>Serviços oferecidos</label>
+    <div class="help">Consultas online, presenciais, valores (se quiser divulgar).</div>
+    <textarea name="Serviços oferecidos" placeholder="Descreva os serviços que você oferece..."></textarea>
+
+
+    <div class="section-title">Objetivo da página</div>
+
+    <label>O que você quer que os visitantes façam?</label>
+    <div class="radio-stack">
+      <label class="radio-option"><input type="radio" name="Objetivo da página" value="Agendar consulta"> Agendar consulta</label>
+      <label class="radio-option"><input type="radio" name="Objetivo da página" value="Entrar em contato pelo WhatsApp"> Entrar em contato pelo WhatsApp</label>
+      <label class="radio-option"><input type="radio" name="Objetivo da página" value="Preencher formulário de contato"> Preencher formulário de contato</label>
+      <label class="radio-option">
+        <input type="radio" name="Objetivo da página" value="Outro">
+        Outro:
+        <input type="text" name="Objetivo da página - qual" placeholder="qual?">
+      </label>
+    </div>
+
+    <label>Frases ou mensagens principais que gostaria de destacar <span class="optional">(opcional)</span></label>
+    <div class="help">Pode escrever mais de uma, uma por linha.</div>
+    <textarea name="Frases principais" placeholder="Ex: 'Um espaço seguro para você se cuidar'"></textarea>
+
+
+    <div class="section-title">Contato e redes</div>
+    <p class="section-hint">Informações que devem aparecer na sua página (WhatsApp e e-mail já foram informados em "Seus dados").</p>
+
+    <label>Instagram</label>
+    <input type="text" name="Instagram" placeholder="@seuinstagram">
+
+    <label>Outros <span class="optional">(alguma outra rede que queira no site)</span></label>
+    <input type="text" name="Outras redes" placeholder="Ex: TikTok, LinkedIn, Facebook...">
+
+    <label>Endereço do consultório <span class="optional">(se atendimento presencial)</span></label>
+    <input type="text" name="Endereço" placeholder="Rua, número, bairro, cidade">
+
+    <button type="submit" class="submit" id="submitBtn">Enviar formulário</button>
+  </form>
+</div>
+
+<p class="note">O formulário aceita quantos envios forem necessários, da mesma pessoa ou de pessoas diferentes — não há limite de quantidade (confirmado na documentação do FormSubmit: submissões ilimitadas no plano gratuito). Cada envio chega automaticamente para flaviohcsmurf@gmail.com, inclusive arquivos anexados. <strong>Antes do primeiro envio de teste real</strong>, verifique a caixa de entrada (e o spam) de flaviohcsmurf@gmail.com: o FormSubmit manda um e-mail pedindo para clicar em "Activate Form" — sem esse clique, os envios não chegam. Essa ativação é feita uma única vez e vale para todos os envios seguintes, de qualquer pessoa.</p>
+
+</body>
+</html>
